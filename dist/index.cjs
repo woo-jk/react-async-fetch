@@ -1975,7 +1975,15 @@ var useFetch = (request, { enabled = true, suspense = true, errorBoundary = true
   if (errorBoundary && status === "error") {
     throw error;
   }
-  return { result, isLoading: status === "pending", error, clearResult, refetch: fetch };
+  return {
+    result,
+    status,
+    isLoading: status === "pending",
+    isError: status === "error",
+    error,
+    clearResult,
+    refetch: fetch
+  };
 };
 var useFetch_default = useFetch;
 
@@ -1983,23 +1991,23 @@ var useFetch_default = useFetch;
 var import_react2 = __toESM(require_react(), 1);
 var useMutation = (request, { errorBoundary = true, onSuccess, onError } = {}) => {
   const [result, setResult] = (0, import_react2.useState)(null);
-  const [isLoading, setIsLoading] = (0, import_react2.useState)(false);
+  const [status, setStatus] = (0, import_react2.useState)("default");
   const [error, setError] = (0, import_react2.useState)(null);
   const mutate = async () => {
-    setIsLoading(true);
+    setStatus("pending");
     try {
       const result2 = await request();
       setResult(result2);
       await onSuccess?.(result2);
+      setStatus("fulfilled");
       return result2;
     } catch (reason) {
       if (reason instanceof Error) {
         setError(reason);
         onError?.(reason);
       }
+      setStatus("error");
       throw reason;
-    } finally {
-      setIsLoading(false);
     }
   };
   (0, import_react2.useEffect)(() => {
@@ -2007,7 +2015,14 @@ var useMutation = (request, { errorBoundary = true, onSuccess, onError } = {}) =
       throw error;
     }
   }, [error, errorBoundary]);
-  return { mutate, result, isLoading, error };
+  return {
+    mutate,
+    result,
+    status,
+    isLoading: status === "pending",
+    isError: status === "error",
+    error
+  };
 };
 var useMutation_default = useMutation;
 /*! Bundled license information:
