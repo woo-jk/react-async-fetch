@@ -1,3 +1,4 @@
+"use strict";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -6,6 +7,10 @@ var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -23,10 +28,11 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/react/cjs/react.development.js
 var require_react_development = __commonJS({
-  "node_modules/react/cjs/react.development.js"(exports, module) {
+  "node_modules/react/cjs/react.development.js"(exports, module2) {
     "use strict";
     if (true) {
       (function() {
@@ -1682,8 +1688,8 @@ var require_react_development = __commonJS({
           if (enqueueTaskImpl === null) {
             try {
               var requireString = ("require" + Math.random()).slice(0, 7);
-              var nodeRequire = module && module[requireString];
-              enqueueTaskImpl = nodeRequire.call(module, "timers").setImmediate;
+              var nodeRequire = module2 && module2[requireString];
+              enqueueTaskImpl = nodeRequire.call(module2, "timers").setImmediate;
             } catch (_err) {
               enqueueTaskImpl = function(callback) {
                 {
@@ -1899,15 +1905,23 @@ var require_react_development = __commonJS({
 
 // node_modules/react/index.js
 var require_react = __commonJS({
-  "node_modules/react/index.js"(exports, module) {
+  "node_modules/react/index.js"(exports, module2) {
     "use strict";
     if (false) {
-      module.exports = null;
+      module2.exports = null;
     } else {
-      module.exports = require_react_development();
+      module2.exports = require_react_development();
     }
   }
 });
+
+// src/index.ts
+var src_exports = {};
+__export(src_exports, {
+  useFetch: () => useFetch_default,
+  useMutation: () => useMutation_default
+});
+module.exports = __toCommonJS(src_exports);
 
 // src/useFetch.ts
 var import_react = __toESM(require_react(), 1);
@@ -1996,10 +2010,6 @@ var useMutation = (request, { errorBoundary = true, onSuccess, onError } = {}) =
   return { mutate, result, isLoading, error };
 };
 var useMutation_default = useMutation;
-export {
-  useFetch_default as useFetch,
-  useMutation_default as useMutation
-};
 /*! Bundled license information:
 
 react/cjs/react.development.js:
@@ -2013,4 +2023,4 @@ react/cjs/react.development.js:
    * LICENSE file in the root directory of this source tree.
    *)
 */
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.cjs.map

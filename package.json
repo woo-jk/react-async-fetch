@@ -27,14 +27,28 @@
   "main": "dist/index.js",
   "scripts": {
     "prepack": "yarn build",
-    "build": "yarn build:tsc",
-    "build:tsc": "yarn tsc"
+    "build": "yarn clean && yarn build:tsc && yarn build:js",
+    "build:tsc": "yarn tsc --emitDeclarationOnly",
+    "build:js": "node build.js",
+    "clean": "rm -rf dist"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    }
   },
   "license": "MIT",
   "type": "module",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
   "devDependencies": {
     "@types/node": "^20.9.0",
     "@types/react": "^18.2.37",
+    "esbuild": "^0.19.5",
     "typescript": "^5.2.2"
   },
   "files": [
