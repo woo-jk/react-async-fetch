@@ -75,7 +75,15 @@ const useFetch = <T>(
     throw error;
   }
 
-  return { result, isLoading: status === "pending", error: error, clearResult, refetch: fetch };
+  return {
+    result,
+    status,
+    isLoading: status === "pending",
+    isError: status === "error",
+    error: error,
+    clearResult,
+    refetch: fetch,
+  };
 };
 
 export default useFetch;
