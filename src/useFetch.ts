@@ -8,7 +8,7 @@ type Options<T> = {
   errorBoundary?: boolean;
   refetchInterval?: number;
 
-  onSuccess?: (result: T) => void;
+  onSuccess?: (result: T) => void | Promise<void>;
   onError?: (error: Error) => void;
 };
 
