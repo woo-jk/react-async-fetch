@@ -1,0 +1,29 @@
+{
+  "name": "react-async-fetch",
+  "version": "0.0.1",
+  "description": "React Hooks for asynchronous processing",
+  "keywords": [
+    "react",
+    "fetch",
+    "async",
+    "hook",
+    "hooks",
+    "query"
+  ],
+  "homepage": "https://github.com/woo-jk/react-async-fetch",
+  "bugs": {
+    "url": "https://github.com/woo-jk/react-async-fetch/issues",
+    "email": "wjk6044@gmail.com"
+  },
+  "author": {
+    "name": "woo-jk",
+    "email": "wjk6044@gmail.com",
+    "url": "https://github.com/woo-jk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woo-jk/react-async-fetch"
+  },
+  "main": "index.js",
+  "license": "MIT"
+}
