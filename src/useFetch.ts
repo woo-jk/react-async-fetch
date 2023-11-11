@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type Status = "pending" | "fulfilled" | "error";
@@ -21,7 +20,7 @@ const useFetch = <T>(
   const [promise, setPromise] = useState<Promise<void> | null>(null);
   const [result, setResult] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
-  const interval = useRef<NodeJS.Timer | null>(null);
+  const interval = useRef<NodeJS.Timeout | null>(null);
 
   const resolvePromise = useCallback(
     (newResult: T) => {

@@ -24,6 +24,21 @@
     "type": "git",
     "url": "https://github.com/woo-jk/react-async-fetch"
   },
-  "main": "index.js",
-  "license": "MIT"
+  "main": "dist/index.js",
+  "scripts": {
+    "prepack": "yarn build",
+    "build": "yarn build:tsc",
+    "build:tsc": "yarn tsc"
+  },
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.37",
+    "typescript": "^5.2.2"
+  },
+  "files": [
+    "dist",
+    "src"
+  ]
 }
