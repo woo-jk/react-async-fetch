@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+type Status = "default" | "pending" | "fulfilled" | "error";
+
 type Options<T> = {
   errorBoundary?: boolean;
 
@@ -9,25 +11,25 @@ type Options<T> = {
 
 const useMutation = <T>(request: () => Promise<T>, { errorBoundary = true, onSuccess, onError }: Options<T> = {}) => {
   const [result, setResult] = useState<T | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<Status>("default");
   const [error, setError] = useState<unknown | null>(null);
 
   const mutate = async () => {
-    setIsLoading(true);
+    setStatus("pending");
 
     try {
       const result = await request();
       setResult(result);
       await onSuccess?.(result);
+      setStatus("fulfilled");
       return result;
     } catch (reason) {
       if (reason instanceof Error) {
         setError(reason);
         onError?.(reason);
       }
+      setStatus("error");
       throw reason;
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -37,7 +39,14 @@ const useMutation = <T>(request: () => Promise<T>, { errorBoundary = true, onSuc
     }
   }, [error, errorBoundary]);
 
-  return { mutate, result, isLoading, error };
+  return {
+    mutate,
+    result,
+    status,
+    isLoading: status === "pending",
+    isError: status === "error",
+    error,
+  };
 };
 
 export default useMutation;
