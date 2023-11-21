@@ -5,6 +5,7 @@ const baseConfig = {
   outdir: "dist",
   bundle: true,
   sourcemap: true,
+  external: ["react", "react-dom"],
 };
 
 Promise.all([
