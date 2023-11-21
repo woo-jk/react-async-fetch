@@ -1,6 +1,6 @@
 {
   "name": "react-async-fetch",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "React Hooks for asynchronous processing",
   "keywords": [
     "react",
@@ -43,7 +43,8 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",
