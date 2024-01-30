@@ -1,45 +1,37 @@
-import { useEffect, useRef, useState } from "react";
-import promiseCache from "./promise/promiseCache";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import PromiseHandler from "./promise/PromiseHandler";
 
 const useSuspenseFetch = <T>(requestKey: string, request: () => Promise<T>) => {
-  const cache = useRef(promiseCache.get(requestKey)).current;
-  const [result, setResult] = useState(cache?.getData() || null);
-  const [error, setError] = useState(cache?.getError() || null);
-
-  if (!cache) {
-    const promise = request();
-    const newCache = new PromiseHandler(promise);
-
-    promiseCache.set(requestKey, newCache);
-
-    throw promise;
-  }
-
-  if (cache.getPromiseStatus() === "error") {
-    throw error;
-  }
-
-  const refetch = () => {
-    const promise = request();
-
-    cache
-      .retryPromise(promise)
-      .then(() => setResult(cache.getData()))
-      .catch(() => setError(cache.getError()));
-  };
+  const keyHistory = useRef(new Set([requestKey])).current;
+  const promiseCache = useSyncExternalStore(PromiseHandler.subscribe, () =>
+    PromiseHandler.get(requestKey, request)
+  );
 
   useEffect(() => {
+    keyHistory.add(requestKey);
+
     return () => {
-      promiseCache.delete(requestKey);
+      PromiseHandler.delete(keyHistory);
     };
-  }, []);
+  }, [requestKey]);
+
+  const invalidateCache = () => {
+    PromiseHandler.delete(requestKey);
+  };
+
+  if (promiseCache.getPromiseStatus() === "pending") {
+    throw promiseCache.getPromise();
+  }
+
+  if (promiseCache.getPromiseStatus() === "rejected") {
+    throw promiseCache.getError();
+  }
 
   return {
-    result: result as T,
-    status: cache.getPromiseStatus(),
-    error: error,
-    refetch,
+    result: promiseCache.getData() as T,
+    status: promiseCache.getPromiseStatus(),
+    error: promiseCache.getError(),
+    invalidateCache,
   };
 };
 
