@@ -1,5 +1,5 @@
 class PromiseHandler<T> {
-  private status: "fulfilled" | "pending" | "error";
+  private status: "success" | "pending" | "error";
   private data: T | null;
   private error: Error | null;
 
@@ -16,7 +16,7 @@ class PromiseHandler<T> {
 
   private resolvePromise(data: T) {
     this.data = data;
-    this.status = "fulfilled";
+    this.status = "success";
   }
 
   private rejectedPromise(error: Error) {

@@ -1,4 +1,4 @@
-type Status = "pending" | "fulfilled" | "error";
+type Status = "success" | "pending" | "error";
 type Options<T> = {
     enabled?: boolean;
     suspense?: boolean;

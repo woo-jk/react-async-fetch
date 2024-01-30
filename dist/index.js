@@ -15,7 +15,7 @@ var useFetch = (request, {
   const interval = useRef(null);
   const resolvePromise = useCallback(
     (newResult) => {
-      setStatus("fulfilled");
+      setStatus("success");
       setResult(newResult);
       onSuccess?.(newResult);
     },

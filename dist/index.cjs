@@ -42,7 +42,7 @@ var useFetch = (request, {
   const interval = (0, import_react.useRef)(null);
   const resolvePromise = (0, import_react.useCallback)(
     (newResult) => {
-      setStatus("fulfilled");
+      setStatus("success");
       setResult(newResult);
       onSuccess?.(newResult);
     },

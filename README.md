@@ -81,10 +81,10 @@ const { result, status, isLoading, isError, error, clearResult, refetch } = useF
 - `result: T | null`
   - request로 가져온 데이터입니다.
   - request가 실패했거나, 아직 요청 중인 상태일 경우 `null` 값을 가집니다.
-- `status: "pending" | "fulfilled" | "error"`
+- `status: "success" | "pending" | "error"`
   - request에 대한 현재 상태입니다.
+  - `success`: request가 성공적으로 이루어진 상태입니다.
   - `pending`: request가 진행중인 상태입니다.
-  - `fulfilled`: request가 성공적으로 이루어진 상태입니다.
   - `error`: request 중 에러가 발생한 상태입니다.
 - `isLoading: boolean`
   - request가 진행 중인 경우 `true` 값을 가집니다.
@@ -182,10 +182,10 @@ const { result, status, error, refetch } = useFetch(requestKey, request);
 - `result: T | null`
   - request로 가져온 데이터입니다.
   - request가 실패했거나, 아직 요청 중인 상태일 경우 `null` 값을 가집니다.
-- `status: "pending" | "fulfilled" | "error"`
+- `status: "success" | "pending" | "error"`
   - request에 대한 현재 상태입니다.
+  - `success`: request가 성공적으로 이루어진 상태입니다.
   - `pending`: request가 진행중인 상태입니다.
-  - `fulfilled`: request가 성공적으로 이루어진 상태입니다.
   - `error`: request 중 에러가 발생한 상태입니다.
 - `error: Error`
   - request가 실패했을 때 발생한 에러 객체 값을 가집니다.

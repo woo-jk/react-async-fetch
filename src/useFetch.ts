@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-type Status = "pending" | "fulfilled" | "error";
+type Status = "success" | "pending" | "error";
 
 type Options<T> = {
   enabled?: boolean;
@@ -31,7 +31,7 @@ const useFetch = <T>(
 
   const resolvePromise = useCallback(
     (newResult: T) => {
-      setStatus("fulfilled");
+      setStatus("success");
       setResult(newResult);
       onSuccess?.(newResult);
     },
