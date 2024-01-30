@@ -14,7 +14,14 @@ type Options<T> = {
 
 const useFetch = <T>(
   request: () => Promise<T>,
-  { enabled = true, suspense = true, errorBoundary = true, refetchInterval, onSuccess, onError }: Options<T> = {}
+  {
+    enabled = true,
+    suspense = false,
+    errorBoundary = false,
+    refetchInterval,
+    onSuccess,
+    onError,
+  }: Options<T> = {}
 ) => {
   const [status, setStatus] = useState<Status>("pending");
   const [promise, setPromise] = useState<Promise<void> | null>(null);

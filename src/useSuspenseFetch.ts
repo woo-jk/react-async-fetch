@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import promiseCache from "./promise/promiseCache";
 import PromiseHandler from "./promise/PromiseHandler";
 
-const useSuspenseFetch = <T>(suspenseKey: string, request: () => Promise<T>) => {
-  const cache = useRef(promiseCache.get(suspenseKey)).current;
+const useSuspenseFetch = <T>(requestKey: string, request: () => Promise<T>) => {
+  const cache = useRef(promiseCache.get(requestKey)).current;
   const [result, setResult] = useState(cache?.getData() || null);
   const [error, setError] = useState(cache?.getError() || null);
 
@@ -11,12 +11,12 @@ const useSuspenseFetch = <T>(suspenseKey: string, request: () => Promise<T>) => 
     const promise = request();
     const newCache = new PromiseHandler(promise);
 
-    promiseCache.set(suspenseKey, newCache);
+    promiseCache.set(requestKey, newCache);
 
     throw promise;
   }
 
-  if (cache.getPromiseStatus() === "rejected") {
+  if (cache.getPromiseStatus() === "error") {
     throw error;
   }
 
@@ -31,7 +31,7 @@ const useSuspenseFetch = <T>(suspenseKey: string, request: () => Promise<T>) => 
 
   useEffect(() => {
     return () => {
-      promiseCache.delete(suspenseKey);
+      promiseCache.delete(requestKey);
     };
   }, []);
 

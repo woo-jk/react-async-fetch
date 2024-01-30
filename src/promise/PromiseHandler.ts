@@ -1,5 +1,5 @@
 class PromiseHandler<T> {
-  private status: "fulfilled" | "pending" | "rejected";
+  private status: "fulfilled" | "pending" | "error";
   private data: T | null;
   private error: Error | null;
 
@@ -21,7 +21,7 @@ class PromiseHandler<T> {
 
   private rejectedPromise(error: Error) {
     this.error = error;
-    this.status = "rejected";
+    this.status = "error";
   }
 
   retryPromise(promise: Promise<T>) {

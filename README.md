@@ -23,13 +23,13 @@ yarn add react-async-fetch
 in ES Module:
 
 ```js
-import { useFetch, useMutation } from "react-async-fetch";
+import { useFetch, useMutation, useSuspenseFetch } from "react-async-fetch";
 ```
 
 in CommonJS:
 
 ```js
-const { useFetch, useMutation } = require("react-async-fetch");
+const { useFetch, useMutation, useSuspenseFetch } = require("react-async-fetch");
 ```
 
 # useFetch
@@ -37,22 +37,14 @@ const { useFetch, useMutation } = require("react-async-fetch");
 서버로부터 데이터를 요청 할 때의 비동기 처리 로직을 쉽게 다룰 수 있게 해주는 React Hook입니다.
 
 ```js
-const {
-  result,
-  status,
-  isLoading,
-  isError,
-  error,
-  clearResult,
-  refetch
-} = useFetch(request, {
+const { result, status, isLoading, isError, error, clearResult, refetch } = useFetch(request, {
   enabled,
-  suspense
+  suspense,
   errorBoundary,
   refetchInterval,
   onSuccess,
   onError,
-})
+});
 ```
 
 ### Options
@@ -161,6 +153,44 @@ const {
   - request가 실패했을 때 `true` 값을 가집니다.
 - `error: Error`
   - request가 실패했을 때 발생한 에러 객체 값을 가집니다.
+
+# useSuspenseFetch
+
+서버 통신 비동기 처리를 Suspense와 ErrorBoundary로 쉽게 다룰 수 있게 해주는 React Hook입니다.
+
+`suspense:true` 옵션을 사용하는 `useFetch`와 다른 점은, `result` 타입에 `null`이 포함되지 않고, 확정적으로 데이터를 가져올 수 있다는 장점이 있습니다.
+다만, 요청한 데이터에 대한 캐싱 작업을 수행하기 때문에 `requestKey` 인자가 필요합니다.
+
+```js
+const { result, status, error, refetch } = useFetch(requestKey, request);
+```
+
+### Options
+
+- `requestKey: string`
+  - _Required_
+  - 데이터를 요청 캐싱에 사용하는 key입니다.
+  - request key를 통해 요청에 대한 데이터 값이 캐싱됩니다.
+  - 각 요청마다 고유의 key 값을 사용해야 합니다.
+- `request: () => Promise<T>`
+  - _Required_
+  - 데이터를 요청하는데 필요한 비동기 함수입니다.
+  - `fetch`, `axios` 등을 사용한 통신 요청 함수가 필요합니다.
+
+### Returns
+
+- `result: T | null`
+  - request로 가져온 데이터입니다.
+  - request가 실패했거나, 아직 요청 중인 상태일 경우 `null` 값을 가집니다.
+- `status: "pending" | "fulfilled" | "error"`
+  - request에 대한 현재 상태입니다.
+  - `pending`: request가 진행중인 상태입니다.
+  - `fulfilled`: request가 성공적으로 이루어진 상태입니다.
+  - `error`: request 중 에러가 발생한 상태입니다.
+- `error: Error`
+  - request가 실패했을 때 발생한 에러 객체 값을 가집니다.
+- `refetch: () => void`
+  - request를 재시도 하는 함수입니다.
 
 # License
 
