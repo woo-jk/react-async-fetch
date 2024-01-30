@@ -162,7 +162,7 @@ const {
 다만, 요청한 데이터에 대한 캐싱 작업을 수행하기 때문에 `requestKey` 인자가 필요합니다.
 
 ```js
-const { result, status, error, refetch } = useFetch(requestKey, request);
+const { result, status, error, invalidateCache } = useFetch(requestKey, request);
 ```
 
 ### Options
@@ -179,9 +179,9 @@ const { result, status, error, refetch } = useFetch(requestKey, request);
 
 ### Returns
 
-- `result: T | null`
+- `result: T`
   - request로 가져온 데이터입니다.
-  - request가 실패했거나, 아직 요청 중인 상태일 경우 `null` 값을 가집니다.
+  - `useFetch` 훅과 달리, 확정적인 result 타입이 반환됩니다.
 - `status: "success" | "pending" | "error"`
   - request에 대한 현재 상태입니다.
   - `success`: request가 성공적으로 이루어진 상태입니다.
@@ -189,8 +189,8 @@ const { result, status, error, refetch } = useFetch(requestKey, request);
   - `error`: request 중 에러가 발생한 상태입니다.
 - `error: Error`
   - request가 실패했을 때 발생한 에러 객체 값을 가집니다.
-- `refetch: () => void`
-  - request를 재시도 하는 함수입니다.
+- `invalidateCache: () => void`
+  - request의 캐싱된 데이터를 삭제하고 다시 fetch를 수행하는 함수입니다.
 
 # License
 
