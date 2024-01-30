@@ -1,6 +1,13 @@
 // src/useFetch.ts
 import { useCallback, useEffect, useRef, useState } from "react";
-var useFetch = (request, { enabled = true, suspense = true, errorBoundary = true, refetchInterval, onSuccess, onError } = {}) => {
+var useFetch = (request, {
+  enabled = true,
+  suspense = false,
+  errorBoundary = false,
+  refetchInterval,
+  onSuccess,
+  onError
+} = {}) => {
   const [status, setStatus] = useState("pending");
   const [promise, setPromise] = useState(null);
   const [result, setResult] = useState(null);

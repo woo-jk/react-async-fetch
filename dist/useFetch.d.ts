@@ -7,7 +7,7 @@ type Options<T> = {
     onSuccess?: (result: T) => void | Promise<void>;
     onError?: (error: Error) => void;
 };
-declare const useFetch: <T>(request: () => Promise<T>, { enabled, suspense, errorBoundary, refetchInterval, onSuccess, onError }?: Options<T>) => {
+declare const useFetch: <T>(request: () => Promise<T>, { enabled, suspense, errorBoundary, refetchInterval, onSuccess, onError, }?: Options<T>) => {
     result: T | null;
     status: Status;
     isLoading: boolean;

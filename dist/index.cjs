@@ -27,7 +27,14 @@ module.exports = __toCommonJS(src_exports);
 
 // src/useFetch.ts
 var import_react = require("react");
-var useFetch = (request, { enabled = true, suspense = true, errorBoundary = true, refetchInterval, onSuccess, onError } = {}) => {
+var useFetch = (request, {
+  enabled = true,
+  suspense = false,
+  errorBoundary = false,
+  refetchInterval,
+  onSuccess,
+  onError
+} = {}) => {
   const [status, setStatus] = (0, import_react.useState)("pending");
   const [promise, setPromise] = (0, import_react.useState)(null);
   const [result, setResult] = (0, import_react.useState)(null);
