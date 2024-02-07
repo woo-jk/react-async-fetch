@@ -21,7 +21,8 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var src_exports = {};
 __export(src_exports, {
   useFetch: () => useFetch_default,
-  useMutation: () => useMutation_default
+  useMutation: () => useMutation_default,
+  useSuspenseFetch: () => useSuspenseFetch_default
 });
 module.exports = __toCommonJS(src_exports);
 
@@ -134,4 +135,112 @@ var useMutation = (request, { errorBoundary = true, onSuccess, onError } = {}) =
   };
 };
 var useMutation_default = useMutation;
+
+// src/useSuspenseFetch.ts
+var import_react3 = require("react");
+
+// src/promise/PromiseCache.ts
+var PromiseCache = class {
+  constructor(promise) {
+    this.promise = promise;
+    this.status = "pending";
+    this.data = null;
+    this.error = null;
+    promise.then(
+      (data) => this.resolvePromise(data),
+      (error) => this.rejectedPromise(error)
+    );
+  }
+  resolvePromise(data) {
+    this.data = data;
+    this.status = "fulfilled";
+  }
+  rejectedPromise(error) {
+    this.error = error;
+    this.status = "rejected";
+  }
+  retryPromise(promise) {
+    return promise.then(
+      (data) => this.resolvePromise(data),
+      (error) => this.rejectedPromise(error)
+    );
+  }
+  getPromise() {
+    return this.promise;
+  }
+  getData() {
+    return this.data;
+  }
+  getPromiseStatus() {
+    return this.status;
+  }
+  getError() {
+    return this.error;
+  }
+};
+var PromiseCache_default = PromiseCache;
+
+// src/promise/PromiseHandler.ts
+var promiseHashMap = /* @__PURE__ */ new Map();
+var listeners = [];
+function emitChange() {
+  for (const listener of listeners) {
+    listener();
+  }
+}
+var PromiseHandler = {
+  get(key, request) {
+    const cachedPromiseHandler = promiseHashMap.get(key);
+    if (!cachedPromiseHandler) {
+      const newPromise = request();
+      const promiseCache = new PromiseCache_default(newPromise);
+      promiseHashMap.set(key, promiseCache);
+      return promiseCache;
+    }
+    return cachedPromiseHandler;
+  },
+  delete(key) {
+    let keys = typeof key === "string" ? [key] : key;
+    keys.forEach((key2) => promiseHashMap.delete(key2));
+    emitChange();
+  },
+  subscribe(listener) {
+    listeners = [...listeners, listener];
+    return () => {
+      listeners = listeners.filter((l) => l !== listener);
+    };
+  }
+};
+var PromiseHandler_default = PromiseHandler;
+
+// src/useSuspenseFetch.ts
+var useSuspenseFetch = (requestKey, request) => {
+  const keyHistory = (0, import_react3.useRef)(/* @__PURE__ */ new Set([requestKey])).current;
+  const promiseCache = (0, import_react3.useSyncExternalStore)(
+    PromiseHandler_default.subscribe,
+    () => PromiseHandler_default.get(requestKey, request)
+  );
+  (0, import_react3.useEffect)(() => {
+    keyHistory.add(requestKey);
+    return () => {
+      PromiseHandler_default.delete(keyHistory);
+    };
+  }, [requestKey]);
+  const invalidateCache = () => {
+    PromiseHandler_default.delete(requestKey);
+  };
+  if (promiseCache.getPromiseStatus() === "pending") {
+    throw promiseCache.getPromise();
+  }
+  if (promiseCache.getPromiseStatus() === "rejected") {
+    throw promiseCache.getError();
+  }
+  return {
+    result: promiseCache.getData(),
+    status: promiseCache.getPromiseStatus(),
+    error: promiseCache.getError(),
+    invalidateCache
+  };
+};
+var useSuspenseFetch_default = useSuspenseFetch;
 //# sourceMappingURL=index.cjs.map
