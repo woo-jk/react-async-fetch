@@ -190,14 +190,14 @@ function emitChange() {
 }
 var PromiseHandler = {
   get(key, request) {
-    const cachedPromiseHandler = promiseHashMap.get(key);
-    if (!cachedPromiseHandler) {
+    const promiseCache = promiseHashMap.get(key);
+    if (!promiseCache) {
       const newPromise = request();
-      const promiseCache = new PromiseCache_default(newPromise);
-      promiseHashMap.set(key, promiseCache);
-      return promiseCache;
+      const promiseCache2 = new PromiseCache_default(newPromise);
+      promiseHashMap.set(key, promiseCache2);
+      return promiseCache2;
     }
-    return cachedPromiseHandler;
+    return promiseCache;
   },
   delete(key) {
     let keys = typeof key === "string" ? [key] : key;

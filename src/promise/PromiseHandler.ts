@@ -12,9 +12,9 @@ function emitChange() {
 
 const PromiseHandler = {
   get<T>(key: string, request: () => Promise<T>) {
-    const cachedPromiseHandler = promiseHashMap.get(key);
+    const promiseCache = promiseHashMap.get(key);
 
-    if (!cachedPromiseHandler) {
+    if (!promiseCache) {
       const newPromise = request();
       const promiseCache = new PromiseCache(newPromise);
 
@@ -23,7 +23,7 @@ const PromiseHandler = {
       return promiseCache;
     }
 
-    return cachedPromiseHandler as PromiseCache<T>;
+    return promiseCache as PromiseCache<T>;
   },
 
   delete(key: string | string[] | Set<string>) {

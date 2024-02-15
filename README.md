@@ -157,12 +157,13 @@ const {
 # useSuspenseFetch
 
 서버 통신 비동기 처리를 Suspense와 ErrorBoundary로 쉽게 다룰 수 있게 해주는 React Hook입니다.
+비동기 작업에 대한 캐싱을 수행합니다.
 
 `suspense:true` 옵션을 사용하는 `useFetch`와 다른 점은, `result` 타입에 `null`이 포함되지 않고, 확정적으로 데이터를 가져올 수 있다는 장점이 있습니다.
 다만, 요청한 데이터에 대한 캐싱 작업을 수행하기 때문에 `requestKey` 인자가 필요합니다.
 
 ```js
-const { result, status, error, invalidateCache } = useFetch(requestKey, request);
+const { result, status, error, invalidateCache } = useSuspenseFetch(requestKey, request);
 ```
 
 ### Options
